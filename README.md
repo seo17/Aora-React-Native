@@ -20,6 +20,7 @@ Aora is a React Native application designed to share user's AI generated videos 
 
 - User authentication (sign up, login, logout)
 - Video Upload, Video Viewing
+- Bookmarking favourite Videos
 
 ## Installation
 

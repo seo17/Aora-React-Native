@@ -4,17 +4,20 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import FormField from "../../components/FormField";
 import EmptyState from "../../components/EmptyState";
 import SearchInput from "../../components/SearchInput";
-
-// Add a heart icon to each post to indicate save post
-// when heart is clicked should get user id
-// Adding liked attributes to video collections to indicate userid that want to save video
-// makes new fetch that fetching all posts liked by users
+import useAppwrite from "../../lib/useAppwrite";
+import { getAllPosts, getSavedVideo } from "../../lib/appwrite";
+import VideoCard from "../../components/VideoCard";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const bookmark = () => {
+  const { user, setUser, setIsLoggedIn } = useGlobalContext();
+  const { data: posts, refetch } = useAppwrite(() => getSavedVideo(user?.$id));
   return (
     <SafeAreaView className="bg-primary h-full">
       <FlatList
-        data={[]}
+        data={posts || []}
+        keyExtractor={(item) => item.$id}
+        renderItem={({ item }) => <VideoCard video={item} userId={user?.$id} />}
         ListHeaderComponent={() => (
           <View className="my-6 px-4 space-y-6 items-start">
             <Text className="text-2xl text-white font-psemibold mb-6">
@@ -36,5 +39,3 @@ const bookmark = () => {
 };
 
 export default bookmark;
-
-const styles = StyleSheet.create({});

@@ -8,16 +8,30 @@ import {
   MenuOption,
   MenuTrigger,
 } from "react-native-popup-menu";
+import { createSavedVideo } from "../lib/appwrite";
 
 const VideoCard = ({
   video: {
+    $id: videoId,
     title,
     thumbnail,
     video,
     users: { username, avatar },
   },
+  userId,
 }) => {
   const [play, setPlay] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+
+  const saveVideo = () => {
+    createSavedVideo(userId, videoId)
+      .then((res) => {
+        if (res) setIsSaved(true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <View className="flex-col items-center px-4 mb-14">
@@ -55,7 +69,7 @@ const VideoCard = ({
               />
             </MenuTrigger>
             <MenuOptions style={optionStyles}>
-              <MenuOption onSelect={() => alert(`Delete`)}>
+              <MenuOption onSelect={saveVideo}>
                 <View className="px-4 flex-row justify-start items-center">
                   <Image
                     source={icons.bookmark}
@@ -63,7 +77,7 @@ const VideoCard = ({
                     className="w-3 h-3"
                   />
                   <Text className="text-base font-psemibold text-gray-100 pl-4">
-                    Save
+                    {isSaved ? "Saved" : "Save"}
                   </Text>
                 </View>
               </MenuOption>

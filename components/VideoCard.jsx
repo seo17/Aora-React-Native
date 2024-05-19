@@ -2,6 +2,12 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { icons, images } from "../constants";
 import { ResizeMode, Video } from "expo-av";
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from "react-native-popup-menu";
 
 const VideoCard = ({
   video: {
@@ -40,7 +46,29 @@ const VideoCard = ({
           </View>
         </View>
         <View className="pt-2">
-          <Image source={icons.menu} className="w-5 h-5" resizeMode="contain" />
+          <Menu>
+            <MenuTrigger>
+              <Image
+                source={icons.menu}
+                className="w-5 h-5"
+                resizeMode="contain"
+              />
+            </MenuTrigger>
+            <MenuOptions style={optionStyles}>
+              <MenuOption onSelect={() => alert(`Delete`)}>
+                <View className="px-4 flex-row justify-start items-center">
+                  <Image
+                    source={icons.bookmark}
+                    resizeMode="cover"
+                    className="w-3 h-3"
+                  />
+                  <Text className="text-base font-psemibold text-gray-100 pl-4">
+                    Save
+                  </Text>
+                </View>
+              </MenuOption>
+            </MenuOptions>
+          </Menu>
         </View>
       </View>
 
@@ -77,6 +105,15 @@ const VideoCard = ({
       )}
     </View>
   );
+};
+
+const optionStyles = {
+  backgroundColor: "#1E1E2D",
+  borderRadius: 5,
+  borderSize: 2,
+  borderStyle: "solid",
+  borderColor: "#232533",
+  padding: 5,
 };
 
 export default VideoCard;
